@@ -1,0 +1,1145 @@
+// asciidoctor-pdf -a pdf-stylesdir=/Users/ingonoka/Documents/Archive/AF\ Payment\ Inc/Soft\ SAM\ V2/ -a pdf-style=log -a image-dir=/Users/ingonoka/Documents/Archive/AF\ Payment\ Inc/Soft\ SAM\ V2/doc_V0.9/images/ BAHLI_API_Specification_V0.9.adoc ; open ./BAHLI_API_Specification_V0.9.pdf
+
+// Linux asciidoctor-pdf -a pdf-stylesdir=/media/sf_Desktop/beejees/ -a pdf-style=log -a image-dir=/media/sf_Desktop/beejees/doc_V0.10/images/ beejees_requirements_V0.1.adoc ; evince ./beejees_requirements_V0.1.pdf
+
+:internal: 
+ifdef::internal[]
+:classification-label: For Internal Use Only
+endif::[]
+ifndef::internal[]
+:classification-label: For External Distribution Under NDA
+endif::[]
+= beep^(C)^ Low Cost Jeepney and Bus Ticketing Solution - Requirements
+ifdef::backend-pdf[]
+{classification-label}
+endif::[]
+Ingo Noka
+:doctype:   article
+:encoding:  utf-8
+:lang:      en
+:toc:       left
+:toc-title: Table of Content
+:revdate:   Nov 8, 2017
+:copyright: Ingo Noka, 2017
+:revnumber: V0.1
+:sectnums:
+:last-update-label!:
+:nofooter!:
+:media:     print
+:icons:  font
+:pagenums:
+//:source-highlighter: coderay
+ifdef::backend-pdf[]
+:title-logo-image: image:images/beep_logo.png[pdfwidth=3in,align=right]
+endif::[]
+  
+ifdef::internal[]
+[WARNING]
+====
+For internal use only!
+====
+endif::[]
+ifndef::internal[]
+[NOTE]
+====
+For external distribution under NDA.
+====
+endif::[]
+    
+== Introduction
+
+The Low Cost Jeepney Solution is an Automated Fare Collection System for Jeepneys and buses in the Philippines. Using low cost passenger and driver terminals devices, the solution provides electronic cash ticketing and fare payment with beep^(TM)^ stored value cards.
+
+For cash tickets the driver has to select the fare and collect cash.  For electronic payment with beep cards, the terminal calculates the fare based on the location of boarding and alighting.
+
+The system comprises of the following components:
+
+* One driver terminal, installed at the driver seat (for example on the dashboard)
+** Helps driver to count passengers entering the vehicle
+** Driver select fare for cash transactions
+** Show tickets sold (beep and cash)
+** Send shift reports via e-mail
+* One or more passenger terminals (installed at the entry or under the ceiling)
+** Passenger tap a beep card when boarding and alighting the vehicle
+** The passenger terminal applies discounts to concessionary cards automatically
+* Backend system 
+** Collects transactions from all terminals in the field
+** Download configuration parameters to terminals in the field
+** Monitor terminals in the field
+* Fare Calculation
+** Based on distance travelled between entry and exit point
+** Option to define stops and fare matrix
+** For cash ticketing the fare is driver selected based on the passenger\'s request
+
+.High Level Solution Design
+image::images/beejees_high_level.jpeg[align="center",pdfwidth=70%]
+
+== Critical Success Criteria
+The following list contains the most important criteria for a successful development and implementation of the solution:
+
+. Complete, timely and accurate upload of transactions
++
+As with every payment system, it is imperative that every successful transaction is accounted for and is settled with the correct party.  It is therefore very important to ensure that every single transaction is uploaded from the terminals to the backend system.  It is equally important that the upload takes place in a timely and accurate manner. Timely in the beep system means that close to [underline]#100% of all transactions are uploaded every 15 minutes or when 10 transactions# have been accumulated.
+
+. Speed of tap-in and tap-out interactions with terminal
++
+Passenger traffic on Jeepneys and buses in the Philippines happens very fast and in a rather hostile environment. The process of tap-in and tap-out must therefore be very fast, specifically the time between tapping the card on the antenna of the terminal and display of the transaction result on the terminal screen must not exceed [underline]##*600* ms##.
+
+. Accuracy of GPS fix (location)
++
+The correct calculation of the fare depends on the terminal having an exact position on the route track.  The solution must be able to use a GPS fix and other information to determine the position on the track with an accuracy of ±10 m
+
+. Usability of the driver terminal user interface
++
+For security and other reasons, the user interface of the driver terminal must be as easy, simple and fast as possible to ensure that all drivers are able to use the system without much training.
+
+. Timely settlement
++
+All transactions uploaded to the backend system must be transferred to the AFPI clearing house for timely settlement.  At the minimum, all transactions taking place before 23:00 must reach the clearing house before 23:30 and must be included in the processing of the next day (morning).
+
+
+. Reliability and resilience of Famoco terminals in Jeepneys
++
+The Jeepney and bus environment is very demanding in terms of temperature, dust, humity/water ingress, vibration and unreliable power supply with voltage fluctuations. The terminals must function in this environment with a high reliability for at least 4 years. The mounting of the terminals and protective casing must ensure that the terminals cannot be damaged or removed easily, especially in passenger traffic areas of the vehicle.
+
+== Timeline
+We target the following preliminary time line for the development and production-readiness of the solution:
+
+.Project Timeline (Phase 1 - Passenger terminal only, single fixed fare)
+|====
+| Stage | Deadline
+
+|Solution design | 2 weeks (October 31)
+| Prototype Development | 8 weeks (January 2018)
+| Prototype Test|2 weeks (January 2018)
+| SIT/UAT|2 weeks (February 2018)
+| Pilot| (March 2018)
+|====
+
+== Phase 1 and 2 Scope
+
+|====
+| Function | Phase 1 | Phase 2
+
+| Driver Terminal |  | Yes
+| Passenger Terminal | Yes | Yes
+| Cash Ticketing |  | Yes
+| Distance based fare | |Yes
+| Fixed Fare per route | Yes | Yes
+| Download Config | all configuration is setup at compile time | Yes
+| Driver login | at the passenger terminal with driver ID card| at the driver terminal
+| Dispatcher login | | driver terminal
+| Blacklist donwload | Yes | Yes
+| beep Transaction upload | Yes | Yes
+| Track Management | | Yes
+| Discount Cards | | Yes, based on card's profile ID
+
+| Shift Management 
+| On passenger terminal use screens D5, D6 and D7
+| per specification
+
+| Config 
+a| 
+* List of pairs Route/Fare 
+* Terminal ID
+* Driver IDs
+* Participant ID
+
+| see specification
+
+| Report and ticket printing | only limit reports on screen when driver logs out | yes
+
+|====
+
+== Screen Flows
+
+=== Driver Terminal
+
+. The main functions of the driver terminal are to perform cash ticketing transactions, to provide reports and to manager different types of users.
+
+
+.Screen flow Driver Terminal
+image::images/screen_flow_driver.jpeg[align="center",pdfwidth=70%]
+
+=== Passenger Terminal
+
+==== Distance based Tap-in and Tap-out
+
+. The main function of the passenger terminal is to write entry time and entry location into the card on boarding and deduction the correct fare on disembarkation.
+. The terminal must not insist on going back to screen P1 when a new card is tapped on either screen P2 or P3 - instead the terminal should perform the same action it would have performed when the card was tapped on screen P1
+. Screens P2 and P3 should remain on display as long as the same card is in the field; when the card is removed and more than 1 second has elapsed since screen P2 or P3 was shown first, the terminal should go to P1 immediately; if the card is removed before one second has elapsed, the terminal must wait for one second (since screens P2 or P3 were shown first) and then go to P1.
+. The passenger terminal sends the following messages to the driver terminal:
+* heartbeat messages every 30 seconds (but only if there has been no other successful message exchange within the last 30 seconds
+* Check-in message (both successful and attempts)
+* Check-out message (both successful and attempts)
+. Background activities such as uploading of transactions to the backend system must not impact the performance of the card interaction
+
+.Screen flow Passenger Terminal
+image::images/screen_flow_passenger.jpeg[align="center",pdfwidth=70%]
+
+==== Single fixed fare per Route
+
+.Screen flow Passenger Terminal
+image::images/screen_flow_passenger_fixed_fare.png[align="center",pdfwidth=70%]
+
+
+. On tap-in the terminal deducts the fare associated with the route
+. The terminal records route, trip number, participant id on the card
+. If the tapped card already contains the current route, trip number and date, the terminal just displays a "Thank You" screen.
+. The
+. see section "fare management" for exception handling
+
+== Screen Designs
+
+=== Driver Terminal
+
+==== Screen D1
+
+The screen design is indicative.  The actual screen design must follow the general layout and must be as close a possible to the picture given the limitations of the FX100+ screen resolution.
+
+.Screen D1
+image::images/screen_d1.jpeg[align="center",pdfwidth=70%]
+
+
+This screen is shown as default when a driver is logged into the terminal. It's main functions are 
+
+* count passengers that are boarding the vehicle
++
+The driver taps the green button every time a new customer enters the vehicle.  The number on the button represents the number of persons in the vehicle who have not yet paid the fare. Every beep card tap on the passenger terminal reduces this number automatically.  The number is also decremented every time a cash ticket transaction has been completed successfully.
+
+* select cash ticket fare amount
+
+.. If driver immediately collects money from a single passenger, it is not necessary to tap the passenger count button first
+.. Passenger tells driver where passenger wants to exit
+.. Driver selects appropriate fare
+.. Driver collects cash and taps OK
+.. Driver terminal returns to “Select Fare” screen
+
+
+* After a cash or successful beep transaction, the number on “Not Paid …” button is decreased by one
+
+* Pressing “Other” moves only the left part of the screen to another 5 fares (possible fares are pre-configured for the Jeepney route; if only 6 fares are pre-configured, the “other” button shows the sixth fare instead of the word “Other”; 
+.. Ideally the program “learns” the most often selected fares and shows those fares on the first screen; 
+.. ideally the program keep track of the position on route and removes higher fares that are not possible anymore
+
+* At the bottom of the screen there is an indication whether the last server connection attempt was successful and whether the passenger terminals are connected and live.  If only one passenger terminal is installed, only one indication (P1) must be shown.
+
+* Tapping the driver card on this screen moves to D7.
+
+==== Screen D2
+
+The screen design is indicative.  The actual screen design must follow the general layout and must be as close a possible to the picture given the limitations of the FX100+ screen resolution.
+
+.Screen D2
+image::images/screen_d2.jpeg[align="center",pdfwidth=70%]
+
+* When the OK button on screen 2 is pressed, the terminal increases the cash total for the shift and returns to screen 1
+
+* If the return button is pressed the terminal return to screen one without increasing any totals
+
+* If the driver card is tapped on this screen, the terminal will move to screen D3 and give the driver the option to choose a discount type (PWD, Student, Senior Citizen)
+
+==== Screen D3
+
+
+The screen design is indicative.  The actual screen design must follow the general layout and must be as close a possible to the picture given the limitations of the FX100+ screen resolution.
+
+.Screen D3
+image::images/screen_d3.jpeg[align="center",pdfwidth=70%]
+
+* The driver will select a discount type. After selection of the discount type the terminal applies the configured fare table and shows screen D4
+
+* If the driver presses the return button, the terminal goes back to screen D2 without making any changes to the fare amount
+
+==== Screen D4
+
+The screen design is indicative.  The actual screen design must follow the general layout and must be as close a possible to the picture given the limitations of the FX100+ screen resolution.
+
+.Screen D4
+image::images/screen_d4.jpeg[align="center",pdfwidth=70%]
+
+* This screen behaves like screen D2 with the exception that a tap with the driver card is ignored.
+
+==== Screen D5
+
+The screen design is indicative.  The actual screen design must follow the general layout and must be as close a possible to the picture given the limitations of the FX100+ screen resolution.
+
+.Screen D5
+image::images/screen_d5.png[align="center",pdfwidth=70%]
+
+
+* This screen is the default idle screen when no user is logged in.
+
+* The indicators in the bottom right corner behave the same as on screen D1.
+
+* A tap of a driver card moves to screen D6
+
+==== Screen D6
+
+The screen design is indicative.  The actual screen design must follow the general layout and must be as close a possible to the picture given the limitations of the FX100+ screen resolution.
+
+.Screen D6
+image::images/screen_d6.png[align="center",pdfwidth=70%]
+
+
+* On this screen the driver starts a shift.
+
+* The aggregated amounts for the previous shift are shown.
+
+* If a printer is installed, a summary report for the previous shift can be printed.  After the report for the previous shift is printed, the terminal automatically moves to screen D5.
+
+* The back button moves the screen to D5.
+
+==== Screen D7
+
+The screen design is indicative.  The actual screen design must follow the general layout and must be as close a possible to the picture given the limitations of the FX100+ screen resolution.
+
+.Screen D7
+image::images/screen_d7.png[align="center",pdfwidth=70%]
+
+
+* On this screen the driver can end the shift, print a shift report and view the accumulated beep and cash transaction amount for the shift.
+
+* The back button moves to screen D1.
+
+* Ending the shift also loggs out the driver.
+
+* The driver can print a shift report if a printer is installed.  The terminal automatically ends the shift before printing the report and loggs out the driver automatically after printing the report. 
+
+=== Passenger Terminal - Distance Based Fare (Tap-IN / Tap-out)
+
+
+==== Screen P1
+
+The screen design is indicative.  The actual screen design must follow the general layout and must be as close a possible to the picture given the limitations of the FX100+ screen resolution.
+
+.Screen P1
+image::images/screen_p1.png[align="center",pdfwidth=70%]
+
+* On entry passengers taps their beep card. Terminal writes entry time and location to the card, and deducts maximum fare and shows screen P2 (1 second)
+* On exit passengers taps card.  Terminal records exit time and location, calculates fare, performs transaction to return overpaid money and shows screen P3 (2 seconds)
+* For successful transacitons the beep success sound must be played at the same time as screens P2 or P3 are shown.
+* For unsuccessful transactions the beep failure sound must be played at the same time as the failure screen is shown.  Unsiccessful transaction are also reported to the driver terminal immediately.  The driver terminal must show a message with high visiual impact (e.g. screen gows all red, flashes and shows message that card is expired)
+* For transactions on concessionary cards (cards that get a discount such as Student, PWD or Senior Citizen Cards), the transaction must be transferred to the driver terminal immediately and a message with high visual impact must be shown. This will allow to driver to check whether the person using the discount card has the expected characteristics (e.g. student vs. senior citizen).
+* In the lower right corner of P1, the terminal indicates the number of minutes until the next transaction upload attempt.  The text is red if the last attempt was unsuccessful; green otherwise. The number of minutes is changed every minute, and may also go up of the terminal has to postpone the upload to ensure fast passenger interaction.
+* In the lower right corner of P1, the terminal indicates whether the connection to the driver console is working.  The text is red if there is no connection and green otherwise
+
+
+==== Screen P2
+
+The screen design is indicative.  The actual screen design must follow the general layout and must be as close a possible to the picture given the limitations of the FX100+ screen resolution.
+
+.Screen P2
+image::images/screen_p2.png[align="center",pdfwidth=70%]
+
+* This screen must stay on as long as the card is in the field. 
+
+* When the card is removed the screen remains on for one second from the time it was first shown. (That means if the card remained in the field after the screen was shown for one second or more, the terminal will move to screen P1 immediately.
+
+* If the screen is still on a new card is tapped, this screen should behave the same as screen P1. If the new transaction is a check-in as well, there must be some visual indication that a new transaction was performed. For example the screen could slide out and the same screen with a new time slides in.
+
+==== Screen P3
+
+The screen design is indicative.  The actual screen design must follow the general layout and must be as close a possible to the picture given the limitations of the FX100+ screen resolution.
+
+.Screen P3
+image::images/screen_p3.png[align="center",pdfwidth=70%]
+
+* The same requirements apply as for screen P2.
+
+=== Passenger Terminal - Single Fixed Fare
+
+
+==== Screen P1.1
+
+The screen design is indicative.  The actual screen design must follow the general layout and must be as close a possible to the picture given the limitations of the FX100+ screen resolution.
+
+.Screen P1.1
+image::images/screen_p1.1.png[align="center",pdfwidth=70%]
+
+* On entry passengers taps card. Terminal writes entry time, vehicle number, route and trip number to the card, deducts single fare and shows screen 2.1 (1 second)
+* On exit passengers taps card, one of te following 
+** Terminal recognizes based on the data on the card that passenger has already paid and shows screen  P3.1 (1 seconds)
+** Terminal recognizes based on data on the card that passenger has not yet paid and shows screen P2.1 (1 second)
+* At the bottom of the screen, the terminal indicates the transaction count, the number of transactions not yet uploaded and the number of minutes until the next transaction upload attempt.  The minutes text is red if the last attempt was unsuccessful; green otherwise.
+* If driver card is tapped on screen P1.1, terminal goes to screen P6.1
+
+==== Screen P2.1
+
+The screen design is indicative.  The actual screen design must follow the general layout and must be as close a possible to the picture given the limitations of the FX100+ screen resolution.
+
+.Screen P2.1
+image::images/screen_p2.1.png[align="center",pdfwidth=70%]
+
+* This screen must stay on as long as the card is in the field. 
+
+* When the card is removed the screen remains on for one second from the time it was first shown. (That means if the card remained in the field after the screen was shown for one second or more, the terminal will move to screen P1 immediately.
+
+* If the screen is still on a new card is tapped, this screen should behave the same as screen P1.1. If the new transaction is a check-in as well, there must be some visual indication that a new transaction was performed. For example the screen could slide out and the same screen with a new time slides in.
+
+==== Screen P3.1
+
+The screen design is indicative.  The actual screen design must follow the general layout and must be as close a possible to the picture given the limitations of the FX100+ screen resolution.
+
+.Screen P3.1
+image::images/screen_p3.1.png[align="center",pdfwidth=70%]
+
+* If the screen is still on a new card is tapped, this screen should behave the same as screen P1.1. If the new transaction is a check-in as well, there must be some visual indication that a new transaction was performed. For example the screen could slide out and the same screen with a new time slides in.
+* This screen does not stay on as long as the card is in the field.  It will go back to P1.1 after 1 second from the point in time the card was recognized by the terminal.
+
+==== Screen P4.1
+
+The screen design is indicative.  The actual screen design must follow the general layout and must be as close a possible to the picture given the limitations of the FX100+ screen resolution.
+
+.Screen P4.1
+image::images/screen_p4.1.png[align="center",pdfwidth=70%]
+
+. P4.1 is the default screen when no driver is logged in.
+. When a driver card is tapped, the terminal goes to P5.1
+. At the bottom of the screen, the terminal indicates the transaction count, the number of transactions not yet uploaded and the number of minutes until the next transaction upload attempt.  The minutes text is red if the last attempt was unsuccessful; green otherwise.
+
+==== Screen P5.1
+
+The screen design is indicative.  The actual screen design must follow the general layout and must be as close a possible to the picture given the limitations of the FX100+ screen resolution.
+
+.Screen P5.1
+image::images/screen_p5.1.png[align="center",pdfwidth=70%]
+
+. On this screen the driver may start a shift or see the transaction count and amount from the previous shift.  This is the previous shift on this vehicle, regardless of who the driver was.
+
+
+==== Screen P6.1
+
+The screen design is indicative.  The actual screen design must follow the general layout and must be as close a possible to the picture given the limitations of the FX100+ screen resolution.
+
+.Screen P6.1
+image::images/screen_p6.1.png[align="center",pdfwidth=70%]
+
+. On this screen the driver may finish a shift or see the transaction count and amount for the current shift.  This means the driver can check the transaction numbers without ending the shift by just pressing the return button after viewing the shift report.
+
+
+==== Screen P7.1
+
+The screen design is indicative.  The actual screen design must follow the general layout and must be as close a possible to the picture given the limitations of the FX100+ screen resolution.
+
+.Screen P7.1
+image::images/screen_p7.1.png[align="center",pdfwidth=70%]
+
+. On this screen the driver views the shift report.
+. The screen times out after 10 seconds and returns to P6.1
+. Just tapping the screen with a finger will also return to P6.1
+
+
+
+== Route Management
+
+* Terminals can be configured with up to 50 routes
+
+For LTFRB franchises the following applies:
+
+* The routes are linked to the Jeepney Operator (according to the LTFRB license)
+* Each terminal can be linked to one Jeepney only at any given time, but terminal can be moved and linked to other Jeepneys as long as at any given time the terminal is linked to one terminal only)
+* Each Jeepney is linked to one single route, which means that when the terminal is linked to a new Jeepney it must be set to the route that is configured for the Jeepney
+
+For non-LTFRB transport, each vehicle can be linked to any route that is configured for the terminal.  However, at any given time, there is alwaus just one single route active.
+
+== Track Management
+
+The track is linked to a route and comprises of geographical coordinates and vectors.
+
+The main functionalities of track management are:
+
+* track recording
+* determine position on track
+* calculate distance between two positions on track
+* verification of accuracy of recording
+
+=== Track Recording
+There must be a dedicated (separate) application to record tracks. The device with this application will be placed in the Jeepney that is plying the route that will be recorded. The device records the movement of the vehicle over a period of time (i.e. the vehicle will ply the route multiple times).
+
+The solution will take the recorded data and calculate a route which consists of a series of points and vectors (direction, distance).
+
+The route also contains confidence level, which is a bell curve over the track, which provides the confidence level by which a point that is not on the track is actually on it.
+
+The algorithm must automatically decide where to put a change in track direction (waypoints).  The decision should be made on average direction and degree of change in direction.  The number of waypoints should be optimized, so that small changes in direction do not create too many waypoints.  The granularity (i.e. minimum distance of track portion and maximum number of waypoints) must be configurable. The application keeps all GPS files, so that the track can be recalculated with different parameters (or improved algorithms).
+
+.Track Recording
+image::images/track_recording.png[align="center",pdfwidth=70%]
+
+
+==== Determine Position on Track
+The terminal takes the position from the GPS receiver and a track (points, vectors, confidence interval) as input and calculates a likely position on the track.  
+
+The terminal takes into account past GPS positions, speed of travel between past GPS positions and likely direction of travel when determining the likely position on track.
+
+The terminal also takes into account the maximum possible speed and the most likely speed (as determined from recorded speed over time) to calculate the most likely farthest point on the track the Jeepney could have possibly traveled since the last GPS position.
+
+The assumption is that the vehicle will not go back on the track (unless it is close to the endpoint and reverses the direction in which the route is traveled). 
+
+.Positioning
+image::images/track_position.png[align="center",pdfwidth=70%]
+
+
+The terminal uses the point of least distance to multiple GPS fixes. The algorithm should use “average GPS fixes”.  For example: GPS fixes 1.1, 1.2 and 1.3 are taken in a short time interval. Calculated point 1’ is the point for which the sum of the distances a, b and c is the minimum.
+
+.Triangulation
+image::images/triangulation.png[align="center",pdfwidth=70%]
+
+
+==== Calculate distance between two positions on track
+
+The device takes two positions on the track and calculates the distance along the track between the two positions.
+
+- Stops
+It is possible to define stops on the recorded route (track). The terminal is able to find the closest stop on the track depending on the calculated position on the route (track)
+Verification of accuracy.
+
+==== Verification of accuracy of tack recording
+The special application which is recording the track takes known positions as user input (for example from a drop down menu) and records position and time . Using the known positions, the track and the calculated positions, the device (or a PC program) determines the accuracy of the calculated positions.
+
+==== Limitations
+The device is installed within the vehicle which degrades GPS accuracy. The vehicle may be within the terminal building, between high rise buildings, under roofs or within tunnels, which degrades GPS accuracy. The software must be able to deal with exceptions such as outlier positions or no GPS data.
+
+=== Fare Management
+The fare is calculated in two possible ways:
+
+. based on distance between actual (i.e. calculated) point of check-in on the track and point of check-out on the track
+. based on entry stop and exit stop (if passenger enters or leaves the vehicles between stops the closest stop is used)
+
+A terminal will either use fare tables or fare matrices, but not both
+
+
+==== Fare Tables
+
+The terminal contains fare tables with the following dimensions
+
+* Minimum base price for the first x meters
+* List of price increases for every x meters after the previous meters up to x meters (see example below)
+
+There is at least one general fare table that applies to all cards that do not have a special fare table. There may be additional fare tables that are linked to “Card Profile” or to a list of account ranges. Fare tables have effective and expiry dates.  The general fare table is always effective and never expires.
+
+.Example of a Fare Table
+|====
+| From (meters)	|To (meters) | Distance Increment | Fare (PHP)
+
+|0|	4000|	4000|	8
+|4001|	5000|	500|	1
+|5001|	10000|	1000|	1
+|====
+
+Given the fare table above the following fares would apply:
+[cols="60,>40",%autowidth]
+|====
+|Distance|Fare
+
+|3000 meters| PHP 8
+|4300 meters| PHP 9
+|4500 meters| PHP 9
+|4600 meters| PHP 10
+|5000 meters| PHP 10
+|7500 meters| PHP 13
+|====
+
+==== Fare Matrix
+
+The terminal contains fare matrices that define the fare between two stops. There is at least one general fare matrix that applies to all cards that do not have a special fare table.  There may be additional fare matrices that are linked to “Card Profile” or to a list of account ranges. Fare matrices have effective and expiry dates.  The general fare matrix is always effective and never expires.
+
+The maximum remaining fare can easily be determined by looking up the fare in the last row or column for a particular stop.
+
+For a single fare P2P route there are only two stops (start and end point of the route).
+
+.Example of a Fare Matrix
+[cols="4*^"]
+|====
+|PHP	|Stop 1	|Stop 2	| Stop 3
+
+h|Stop 1	|-	|8	|12
+h|Stop 2	|8	|-	|8
+h|Stop 3	|12	|8	|-
+|====
+
+==== Maximum Remaining Fare on Check-in
+
+* On *check-in* the terminal always deducts the maximum remaining fare from the point of check-in to the end of the route.
+
+* On *check-out* the terminal calculates the actual fare and returns the amount that has not been used.
+
+* Exception scenarios:
+. Passenger does not have sufficient balance for the maximum remaining fare
++
+Passenger either pays cash if operator supports cash or has to leave and load enough money first
+
+. Passenger does not check-out
++
+Passenger will be charged the maximum remaining fare from point of entry. When the card is then tapped on a different vehicle, route or trip, the initial check-in is closed and a new check-in is created  (also see scenario 4)
+
+. Passenger does not check-in
++
+When the passenger attempts to check-out, the card tap is now considered a check-in and the maximum remaining fare from the point of entry is charged. When the card is then tapped in a different vehicle, route or trip, the initial check-in is closed and a new check-in is created  (also see scenario 4)
+
+. Passenger “checks-in” a card that is already checked-in
++
+On the same vehicle and same trip, the card tap will be considered a check-out and the fare from point of original check-in and point of “check-out” is charged.
++
+Whenever the vehicle is reaching the end-point of the route, the trip is finished a new trip is started, which means that passenger will be charged the maximum remaining fare for the original trip and the card tap is now considered a new tap-in.
++
+On any other vehicle, route or trip, the previous check-in is closed and a new check-in is created
+
+. Passenger does not check-in or check-out
++
+Operators, drivers and inspectors are responsible to ensure that passengers check in and out; otherwise passengers will not be charged.
+
+* Overcharged fare for customers who did not check-out will not be refunded, because it is not known where the customer exited the vehicle and therefore the actual fare cannot be calculated.
+
+* The terminals and cards do not have an overdraft facility; the passenger must have enough balance for the maximum remaining fare on check-in; the card will be rejected even if the actual fare would be lower than the balance on the card.
+
+* The terminals do not support automatic replenishment of card card balances.
+
+* On circular routes, the end of the route is the entry point for the particular passenger; passengers staying in the vehicle for an entire route and exiting beyond the entry point will be charged the maximum fare for the route.
+
+==== Fixed Fare on Check-in
+
+* On *check-in* the terminal always deducts a fixed amount.
+
+* On *check-out* the terminal only displays a message that the fare has already been deducted.
+
+* On the same vehicle, trip and route, any additional tap of a single card will be considered redundant and no fare is charged
+
+*Exception scenarios
+
+. Passenger remains in vehicle beyond the end point of the route
++
+Passenger will be charged again if card is tapped on exit.
+
+== Security and MSAM Management
+
+* The passenger terminal contains an AFPI MSAM V2.x (maybe changed to MSAM V3.x during the project)
+
+* All MSAM management must be done in the background, i.e. without interrupting the passenger facing functions of the device.
+
+* The terminal must keep track of all limits and thresholds on the MSAM and log into the MSAM manager in order to refresh limits that are about to be breached.
+
+* In all cases, the terminal will log into the MSAM manager automatically without the need to restart the terminal or the application.
+
+* The terminal must provide its normal function immediately after restart, unless the MSAM is disabled or requires a refresh of limits.  The process to log inot the MSAM manager must not slow down or delay the user facing functions.
+
+== Configurable Parameters
+
+* List of fare matrices with the the following parameters for each matrix:
+** Effective time (timestamp)
+** Expiry time (timestamp)
+** List of card profile identifiers (there must be one identifier that stands for all possible card profile ids)
+** List of account ranges (each element of the list has a start account number and an end account number; all account numbers that fall in between start and end number are members of the account range)
+* List of fare tables (each table has the same parameters as a fare matrix)
+* List of routes with the following parameters for each route:
+** Long name
+** Short name
+** Track (waypoints)
+** List of stops
+* Participant ID
+* Tax Identification Number (TIN)
+* Upload thresholds
+** Number of minutes after which a new upload must be started
+** Number of transactions after which a new upload must be started
+** Maximum number of transactions in one single upload request
+** Maximum number of transactions in one single upload batch
+
+== User Management
+
+
+There are four user roles for the AFCS application: 
+* Driver, 
+* Cash Collection Officer, 
+* Admin and 
+* Dispatcher
+
+The Cash Collection Officer Role is reserved for future use, but the software must be ready to integrate functions that are only available to this user role.
+
+=== ID cards
+
+Drivers, Admin and Dispatchers get individual identification cards.  The cards are DESFire EV1 cards.
+
+The identification cards are personalized in file 0 of AID 1 with the Name (first, middle and family) and company staff ID.  The card also contains a bus operator specific ID number.  
+
+The card is identified by its UID.  The user is identified by the combination of UID and bus operator specific staff ID (the combination of these two IDs is the User ID). 
+
+[cols="30,10,60"]
+|====
+| Data Field | Size (Bits) | Value
+
+| ID Type 1 |5 | fixed at 5
+| ID Number 1 |128 | RFU
+| N/A | 5 | Not used
+| N/A  |128 | Not used
+| N/A  | 128 | Not used
+| N/A  | 88 | Not used
+| Card Holder First Name | 128  .3+.^| ASCII: max 15 / 1 printable English characters, 1 byte per character. The padding (right) for unused byte is 0x00.
+
+| Card Holder Middle Initial | 16 
+| Card Holder Last Name |128 
+| N/A | 256 | Not used
+| N/A | 256 | Not used
+| N/A | 80 | Not used
+| N/A | 10 | Not used
+| N/A | 16 | Not used
+| N/A | 2 | Not used
+| N/A | 3 | Not used
+| N/A | 240 | Not used
+| Employee ID | 72 | Employer specific.  If nothing else is specified this is formatted as 8 ASCII characters (right justified with zeros, i.e. the 9th character us always zero)
+| SP ID of Employer | 16 | The valid data range is from 0 to 65,535
+| Last Update | 16 | 2-byte unsigned integer value expressed in number of days since the Epoch date of 01-Jan-1999 00:00, GMT 0
+| Spare bits | 71 |
+| Total File size | 1792 |
+|====
+
+In the spare bits (72) of file 0, two fields identify the card type: 
+
+[cols="30,10,60"]
+|====
+| Field | Size (Bits) | Value
+
+| Domain | 4 a| Allowable values: 
+
+* 1 … AFCS, 
+* 2 - 15 … RFU
+
+| Role |  4 a| Allowable values per domain
+
+* AFCS domain
+** 1 … driver
+** 2 … dispatcher
+** 3 … collection officer
+** 4 … admin
+* Other domains
+** RFU
+
+|====
+
+The personalization should be done by a simple program running on a PC/laptop with an ACS card reader attached to it
+
+The application has a log in screen from which the driver, admin, collection officer or the dispatcher can login.  Log in is achieved by tapping the card on the NFC antenna.  There is no additional user input required.
+
+If a function is not available to a logged in user, the user interface element (e.g. button) associated with that function should be “greyed out”.
+
+If a function requires a second user authentication, the respective user must tap their card to authorize the function (this should be logged but the additional user is not logged in or out).
+
+For user IDs that are included in the user action list, the terminal must carry out the requested action.
+
+=== User Access Matrix
+
+.User Access Matrix
+[cols="<,4*^.^"]
+|====
+|Function| Driver|	Cash Collection Officer|	Dispatcher|	Admin
+
+h| Recording Standard Transactions	|Yes	|No	|No	|No
+h| Recording Discount Transactions	|Yes	|No	|No	|No
+h| Change Route	|No	|No	|Yes	|No
+h| Change vehicle Number	|No	|No	|Yes	|No
+|====
+
+				
+== Data Field Definitions
+
+=== Unique Transaction ID
+
+. Each transaction must be allocated a unique transaction identifier. The identifier must be unique per terminal.
+. The identifier must contain a number that is allocated consecutively, must not be reused for another transactions in the same terminal and must not have gaps (the Master Transaction Counter must be used for this purpose). 
+. The Unique Transaction ID will also be used as receipt number.
+. The Unique Transaction ID will also be used as ticket number.
+. The unique transaction identifier is unique across all beep terminals if combined with the terminal id (the terminal may also be part of the unique transaction id).
+. The transaction id will be presented as string of one-byte long ASCII codes [A-Z0-9]
+. If necessary the unique transaction id can be padded with zeros on the right
+
+.Unique Transaction ID - Components (example 12 bytes: 133128410244)
+|====
+|Component|	Explanation|	Sample
+
+| Template ID
+a| * 1 byte
+
+Determines how the remaining characters of the unique transaction id will be interpreted
+Currently the following values are allowed:
+
+* 1 … Jeepney transaction identifier"
+| 1
+
+|Transaction Type
+a| * 1 byte
+
+* Currently the following values are allowed
+
+** 1 … beep transaction (tap-in/tap-out)
+** 2 … beep transaction (driver selected fare)
+** 3 … cash transaction"	
+| 3
+
+| Master Transaction Counter
+a| 
+* 1 byte … length
+* variable … value of master transaction counter"	
+| 3128
+
+| Participant ID of the operator
+a| 
+* 1 byte … length
+
+* variable … value of participant id	
+| 41024
+
+| Luhn Checksum
+a| * 1 byte
+
+Calculated over the ascii codes of each byte starting with the Transaction Type, excluding check sum itself and excluding the optional padding characters"
+| 4
+|====
+
+=== Unique Terminal ID
+
+. The terminal ID is unique for each beep™ terminal and is constructed from the IMEI of the device.  The 15-digit IMEI is right justified and left-padded with zeros.  For example if the IMEI is `352701060268304`, the terminal ID will be a 32-digit number: “`00000000000000000352701060268304`”.
+
+* The first 8 digits of the IMEI identify the model (e.g. 35270106 stands for the FX-100).  
+* The next 6 digits identify the individual device and the last digit is a LUHN checksum. 
+
+. The checksum can be used to verify whether the IMEI portion of the terminal ID contains errors.
+. The terminal id will be presented as string of decimal digits if in human readable form or as packed BCD if in binary form
+. If necessary the unique transaction id can be padded with zeros on the right
+
+|====
+| Component	|Explanation	|Sample
+
+| Template ID	
+a| * 1 byte
+
+Determines how the remaining characters of the unique transaction id will be interpreted
+
+Currently the following values are allowed:
+
+* 1 … IMEI (15 bytes incl. check digit)	
+|1
+
+|TAC
+a| * 8 bytes
+
+Type Allocation Code. Identifies the type of the device. 
+|35270106
+
+|SN
+a| * 6 bytes
+
+Serial Number of the individual device.
+|26830
+
+|Luhn Checksum	
+a| * 1 byte
+
+Luhn checksum over the TAC and SN.  Note: The RFU portion is not included in the Luhn check digit calculation.	
+|4
+|====
+
+== Non-Resettable Counters and Parameters
+
+The terminal must maintain the following non-resettable counters:
+
+* Master Transaction Counter: 
++
+Number of all successful beep or cash transactions since the terminal had its first successful production transaction.
+
+* beep Transaction Counter: 
++
+Number of all successful beep transactions since the terminal had its first successful production beep transaction.
+
+* cash Transaction Counter: 
++
+Number of all successful cash transactions since the terminal had its first successful production cash transaction
+
+* The same counters as above for each type of concessionary card type (initially Senior Citizen, PWD, Student).
+
+* The same counters as above for each unsuccessful transaction
+
+The Master Transaction Counter is displayed on most screens. 
+
+Once the terminal is put into production mode, the counters must never be reset.  The first master counter value is 1. 
+
+The counters must be kept in non-volatile memory and must maintain their value for a period of one year even in the event of a complete and sudden loss of power.
+
+The terminal must maintain the following non-resettable parameters:
+
+* Date/Time of first production transaction on this terminal
+* Participant ID of the bus operator
+* TIN (tax ID number)
+
+=== Logging
+
+The application has a continuous log.  The oldest log entries are overwritten when the configurable size or time period (whatever comes first) is exceeded.
+
+The log level can be configured:
+
+* Standard … Only errors and the following system events are logged
+** Transaction upload (time, counters, result)
+** Low power shutdown
+** System start/shutdown
+** Login/Logout of Users
+** Change of route or vehicle number
+** Config changes
+
+* Debug … Everything from level 0, plus the following
+** Debug messages
+
+There is a mechanisms to extract logs from the device directly and over the network connection
+
+=== Server Interface
+
+==== Server Interface Methods
+
+* The details of the web api are specified in a separate document.
+
+* The “payload” of the web api calls is formatted in JSON
+
+* The web api contains the following “methods”
+
+** Upload transaction records
++
+upload one or multiple transactions to server
+
+** Download configuration parameters and user action list
++
+download parameters and/or user action list
+
+** Monitor terminal (heartbeat requests)
++
+send a heartbeat to server
+
+** Upload log records
++
+Uploading log to server
+
+** User management
++
+request login of user (RFU)
+
+
+==== Terminal Action List
+
+A Terminal Action List may be returned to the terminal in any response message and allows the server to instruct the terminal to perform a number of actions such as downloading a new configuration or to upload a log
+
+The following actions are defined:
+
+* Download parameters
++
+Terminal must send a DOWNLOAD request
+
+* Send Log
++
+Terminal must send the log
+
+* Cancel Action
+This is a meta action, which cancels an actions that was previously sent to the terminal
+
+Each action contains an action code, parameters required for the action, a timestamp, an expiry date and an unique identifier.  The identifier is unique for the terminal only.
+
+==== User Action List
+
+An user action list is returned to the terminal as part of a configuration download and allows the server to instruct the terminal to change user configurations.
+
+Each action contains an action code, a user id, parameters required for the action, a timestamp, an expiry date and an unique identifier.  The identifier is unique for the terminal only. 
+
+The following actions are defined:
+
+* Block
++
+deny access to the user and change status on the card to “disabled” when the card is presented next time; if user is logged in, log the user out
+
+* Update
++
+change user parameters such as access rights.  When the usr id card is presented next time, check whether the change has already been made and make the requested change to the data on the card first and then allow access based on the new data on the card (e.g. when a card is presented as driver card and the requested change is changing the card to dispatcher card, then the access should be granted as dispatcher (and not as driver) - no access must be granted if the change couldn’t be completed successfully.
+
+Changes that have been made to a user card must be logged.
+
+==== Transaction Upload - Principles
+
+. Client and server store an Upload Index, which is the highest consecutive transaction counter that has been uploaded to the server
+
+.. The server does not increase the Server Upload Index (SUIDX) if there are transaction numbers missing in the sequence, for example:
+
+* The server receives transactions with id 100, 101 and 103 -> The SUIDX is now 101 at the server side and the Client Upload Index (CUIDX) is 103 at the client side
+
+* Regardless of the above, the server must store transaction 103 in the database and upload it to upstream systems.  As the client will send 103 again, the server must compare the transaction record with the already stored record and discard the redundant transaction record.  If there is a change in the transaction record, the server should store this as an exception for manual review.
+
+
+.. The server always sends the SUIDX to the client in the response message, for example
+
+* In the example above the server would return 101 as the SUIDX -> the client resets the CUIDX from 103 to 101
+* The client would have to send 102 and 103 again in the next upload request
+
+.. If the client didn’t receive the response message, it should reset the CUIDX to the number it had before the Upload Request
+
+.. If the server receives an Upload request with an CUIDX that is lower than the SUIDX, it must respond with the SUIDX and the client must send a new Upload Request with the CUIDX set to the SUIDX (the clients must not send transactions with counters that are lower than the new CUIDX)
+.. If the server receives an Upload request with an CUIDX that is higher than the SUIDX, it must respond with the SUIDX and the client must send a new Upload Request with the CUIDX set to the SUIDX
+
+* This will also allow the server to request a resend of transactions.
+
+. Upload Requests always include the CUIDX, the number of transactions to be expected (EXPNUM) by the server and the Master Transaction Counter (MTC)
+
+.. The SUIDX plus the number of transactions does not have to be equal to the MTC, as the client may otherwise be forced to continuously upload transactions when there are new transactions taking place in between Upload Request and Upload Response
+
+* When the client starts an Upload sequence, it will mark all transaction from CUIDX to MTC as “pending upload”
+* Transactions that take place after that will be included in the next scheduled Upload sequence
+* The terminal will clear all transactions that are marked as “pending upload” first before moving on the transactions that have occurred since the Upload sequence was started
+* Once all transaction marked as “pending upload” are cleared, the terminal checks whether there are new transactions and whether the number of new transactions is higher than the upload trigger parameter (i.e. the maximum number of not uploaded transactions after which the terminal must initiate an upload sequence)
+
+.. If the Upload Request message contains fewer transactions than EXPNUM, the server will send a response requesting a new Upload Request with the remaining number of transactions.
+
+.. The transactions in the Upload Request must start with a counter that is CUIDX + 1
+
+.. The transactions in the Upload Request must end with CUIDX + EXPNUM or less
+CUIDX plus EXPNUM must be equal or less than MTC
+
+.. The number of transactions included in one single Upload request message must be configurable.  Default is 10.
+.. The client must always attempt to complete the upload of EXPNUM transactions before attempting to send a new batch.
+.. The server must not insist on a completion of the upload of EXPNUM transactions, however the server must store the information that it has received fewer than expected transactions in the last request (intended for trouble shooting, not used in the protocol)
+
+. The server does not accept upload of transactions that are not in sequence.  The server must return an error code and the SUIDX.
+
+. Each upload sequence (batch) is identified by the server time (when the first request of the batch is received), the CUIDX and the EXPNUM of the initial request message in the batch; response codes REPEAT and DUPLICATE close the previous batch and start a new batch; response code INCOMPLETE does not close the batch (i.e. the next upload request belongs to the same batch); response code OK closes a batch
+
+==== Transaction Upload - Normal
+
+.Transaction Upload Normal
+image::images/transaction_upload_normal.png[align="center",pdfwidth=70%]
+
+==== Transaction Upload - SUIDX < CUIDX
+
+.Transaction Upload SUIDX < CUIDX
+image::images/transaction_suidx_less_than_cuidx.png[align="center",pdfwidth=70%]
+
+==== Transaction Upload - SUIDX > CUIDX
+
+.Transaction Upload SUIDX > CUIDX
+image::images/transaction_suidx_greater_than_cuidx.png[align="center",pdfwidth=70%]
+
+==== Transaction Upload - Interrupted
+
+.Transaction Upload Interrupted
+image::images/transaction_upload_interrupted.png[align="center",pdfwidth=70%]
+
+==== Transaction Upload - Response Interrupted
+
+.Transaction Upload SResponse Interrupted
+image::images/transaction_upload_response_interrupted.png[align="center",pdfwidth=70%]
+
+== Time Services
+
+. It is essential that the terminal has an accurate time as the backend servers will not accept requests with timestamps that more than 5 minutes apart from the server time.
+
+. Before any activity is started the terminal must call a defined network time server.
+
+. In case the network or network time server are not available and if the terminal time is more recent than the latest transaction times tamp in the transaction database, the terminal must start accepting passenger transactions, but should continue to attempt a time synchronization in no longer than 5 minute intervals.
+
+== Hardware
+
+The project will initially use the Famoco FX100+ device with a fron-facing antenna.
+
+== Terminal Program Structure and general Requirements
+
+. The passenger-facing card interaction must have priority at all times.
+
+. The configuration parameters should be provided through an Android Content Provider running in its own application.  This application will later be used to change configuration parameters either locally or via remote call to the backend service.
+
+. The transaction upload component should run as its own applicaiton or as an Application Service in its own thread. Uploading transactions must never interfere with the passenger card interaction.
+
+. The MSAM management should be run from its own application or as an Application Service in its own thread.  The terminal must function normally at all times (including startup of the application) even if no connection to the MSAM manager can be made. This assumes that the MSAM is enabled and has not reached any of its maximum thresholds.
+
+. All services, content providers and applications must start automayically when the main application is started.  The Famoco FMS will auto start one defined application for that purpose.
+
+. The Android buttons such as the back button or the menu button should either be disabled or any button press should be consumed by the application.  The buttons must have no effect on the normal function of the terminal.
+
+. The application should ensure that all data is correctly written to logs and databases when the power off button is pressed.
+
+. The terminal screen must not go into sleep mode when a shift is ongoing. The terminal may go into sleep mode when the login screen is shown.  In this case it must be possible to wake up the terminal without restarting the device or the application.
+
+== Audio Alert for Unsuccessful Transactions
+
+. In addition to displaying an error screen, the terminal must be able to play an audio alert when a transaction fails.  The terminal may be connected to a Bluetooth speaker, which should then be used.
+
+. Unsuccessful transactions include the following:
+.. Expired card
+.. Blocked card
+.. Failed authentication
+.. Unrecognized cards
+.. Premature removal of card 
+
+
+== Terms and Definitions
+
+Point of Check-In or Check-out::
+The point on the track (as calculated from the GPS fixes) where the passenger tapped the card to check-in or to check-out
+
+Point of entry or exit::
+The point on the track (as calculated from the GPS fixes) where the passenger entered or left the vehicle (usually the same as the Point of Check-In or Check-Out, but we define it separately to account for situations in which the passenger does not tap the card at the time of entering or exiting the terminal)
+
+Check-in::
+Process of passenger tapping a card at a beep terminal, recording of entry time and entry location on the card and debiting the maximum remaining balance
+
+Check-out::
+Process of passenger tapping a previously checked-in card at beep terminal, recording exit time and exit location on the card and crediting unused funds
+
+Stop::
+A defined stop on the route where the PUV is supposed to allow passengers to enter or exit the vehicle
+
+Route::
+The route that is defined by the LTFRB and that a PUV is allowed to service
+
+PUV::
+Public Utility Vehicle (such as Jeepneys, UV Express or Buses)
+
+Jeepney::
+As defined by the DOTr Omnibus guidelines
+
+Bus::
+As defined by the  DOTr Omnibus guidelines
+
+Track::
+List of geographic coordinates and vectors (direction and distance in between coordinates) that represents a Route 
+
+Fare::
+Cost of using a PUV for a particular distance
+
+Passenger Terminal::
+Terminal that passengers use to check-in or check-out
+
+Driver Terminal::
+Terminal that the bus drivers uses to record cash transactions, count passengers who are entering the vehicle and to keep track of total collected fares
+
+beep Transaction (alternatively beep Credit or beep Debit Transaction)::
+A transaction in which the balance on the card is changed (debit or credit)
+
+cash transaction::
+A transaction in which the passenger pays with cash for a ticket
+
+DOTr::
+The Department of Transportation of the Philippines
+
+LTFRB::
+The Land Transaport Franchising and Regulatory Board of the Philippines
+
+MSAM::
+Merchant SAM (Secure Application Module)
+
+Famoco::
+Company providing Android based low-cost payment terminals.
+
+Fixed Fare::
+Fare that only has one single value for a specific route.
+
+Distance-based Fare::
+Fare that is calculated based on the boarding and disembarkation point of the paying passenger.
+
+Concessionary Card::
+Discount card as defined in the AFPI Concessionary Agreement. Currently there are concesionnary cards for Persons With Disabilities and for Senior Citizens.
+
+PWD::
+Person With Disability
+
+Discount Cards::
+Concessionary cards, student cards and other cards that may attract a discount based on the profile of the card.

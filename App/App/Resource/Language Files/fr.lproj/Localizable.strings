@@ -1,0 +1,206 @@
+/*
+ Localizable.strings
+ Peepons
+ 
+ Created by Samir
+ Copyright (c) 2017 Samir. All rights reserved.
+ */
+
+
+//Language
+"keyLangen" = "English";
+"keyLangnl" = "Nederlands";
+"keyLangfr" = "français";
+"keyLangde" = "Deutsche";
+
+//common messages
+"keyInternetMsg" = "Oops, Meopin n'est pas joignable. Vérifiez votre connection et essayez à nouveau.";
+"KeyUnknowError" = "il y a eu une erreur. Essayez à nouveau";
+
+"keyYes" = "Oui";
+"keyNo" = "Non";
+"keyOk" = "Ok";
+"keyCancel" = "Annuler";
+"keyDone" = "Terminé";
+"keySave" = "Sauver";
+"keyComingSoon" = "Viendra bientôt!";
+"keyBuildNo" = "Construire:";
+"keyAppUpgradeMsgTitle" = "Nouvelle version disponible";
+"keyAppUpgradeMsg" = "Une plus récente version peut être téléchargée! Actualisez votre appli en visitant le Apple Store.";
+"keyAppUpgradeUpdate" = "Actualiser";
+
+//Photo
+"keyTakePhoto" = "Prendre une photo";
+"keyChoosePhoto" = "Choisir une photo";
+"keyRemovePhoto" = "Supprimer la photo";
+"keyNoCamera" = "Caméra n'est pas disponible.";
+
+//Logout
+"keyLogoutMsg" = "Etes-vous sûr de vous déconnecter?";
+
+//Register Screen
+"KeyRegister" = "Enregistrer";
+"KeyRegisterContent" = "-vous comme patient. L'enregistrement est nécessaire pour \n évaluer les prestataires et prendre des rendez-vous en ligne.";
+
+"KeySalutation" = "Salutation";
+"KeyTitle" = "Titre";
+"KeyFirstName" = "Prénom";
+"KeyLastName" = "Nom de famille";
+"KeyUserName" = "Nom d'utilisateur";
+"KeyEmailAddress" = "E-mail";
+"KeyMobileNo" = "Ex. +(préfixe pays)(numéro mobile)";
+"KeyPassword" = "Choisir un mot de passe";
+"KeyPasswordCon" = "Confirmer votre mot de passe";
+"KeyPolicy" = "J'accepte la politique de confidentialité de Meopin.";
+"KeylblTerms" = "J'accepte les conditions générales de Meopin";
+
+"KeyLogIN" = "Aéjà enregistré? Connectez-vous";
+"keyRegisterTitile" = "Je suis un nouvel utilisateur";
+
+"keyRVSalutation" = "Entrer la salutation.";
+"keyRVTitle" = "Entrer le titre.";
+"keyRVFirstName" = "Entrez le prénom.";
+"keyRVLastName" = "Entrez le nom de famille.";
+"keyRVUserName" = "Entrez le nom d'utilisateur.";
+"keyRVMobileNo" = "Entrez le nom de mobile.";
+
+"keyRVEmailMsg1" = "Entrez votre email.";
+"keyRVEmailMsg2" = "Entrez un email valable.";
+
+"keyRVPassword" = "Choisissez un mot de passe.";
+"keyRVPasswordMsg2" = "Votre mot de passe doit avoir 6 caractères et inclure au moins 2 majuscules, 1 minuscule et 1 chiffre.";
+
+"keyRVConfPassword" = "Confirmez votre mot de passe.";
+"keyRVConfPassword1" = "Le premier mot de passe et celui que vous avez confirmé ne sont pas concordants.";
+"keyRVPrivacy" = "Merci de bien vouloir accepter la politique de confidentialité de Meopin.";
+"keyRVTermCondition" = "Merci de bien vouloir accepter les conditions générales de Meopin.";
+
+// Register Varification Screen
+"KeyRegVVarification" = "Vérification";
+"KeyRegVVarificationMsg" = "Nous vous avons envoyé un SMS avec un code \n au numéro de mobile que vous avez entré \n pendant l'enregistrement.";
+"KeyRegVVarificationConfiMsg" = "Afin de compléter votre enregistrement, merci de bien vouloir \n entrer ici le code d'activation à 6 chiffres.";
+"KeyRegVVarificationCodeMsg" = "Entrez ici le code d'activation à 6 chiffres.";
+"KeyRegVResendVarificationCode" = "Renvoyer le code de vérification";
+"KeyRegVBtnSubmit" = "Soumettre";
+"KeyRegVVarifyCodeMsg" = "Vous avez indiqué un code d’activation incorrect.";
+"KeyRegVVarificationCode" = "Entrez le code d'activation à 6 chiffres";
+
+//Register Success Screen
+"keyRegisterSuccessStatus" = "Merci";
+"keyRegisterSuccessMsgFirst" = "Vous demande d'enregistrement a été transmise à Meopin.";
+"keyRegisterSuccessMsgMiddle" = "Dès que votre enregistrement aura été accepté par Meopin, vous en serez informé par email et recevrez vos détails d'accès.";
+"keyRegisterSuccessMsgLast" = "Vous pouvez chercher et trouver des prestataires de santé \n et lire nos articles de blog \n sans être enregistré.";
+
+"keyRegisterSuccessSearchProvider" = "Chercher un prestataire";
+"keyRegisterSuccessMeopinBlog" = "Aller vers le Blog de Meopin";
+
+//Register Failer Screen
+"keyRegisterFailStatus" = "Oops! Aucune concordance";
+"keyRegisterFailMsg" = "La vérification de votre numéro de mobile a échoué.";
+"keyRegisterFailScreenMsg" = "Le premier portail global & digital portal pour trouver et évaluer \n des professionnels de la santé.";
+"keyRegisterFailMsgCode" = "Envoyez-moi un nouveau code d'activation";
+
+//Provider Edit Profile
+"KeyPEPSalutation" = "Salutation";
+"KeyPEPTitle" = "Titre";
+"KeyPEPFirstName" = "Prénom";
+"KeyPEPLastName" = "Nom de famille";
+"KeyPEPEmailAddress" = "Email";
+"KeyPEPPracticeName" = "Nom du cabinet";
+"KeyPEPStreet" = "Rue";
+"KeyPEPNo" = "No";
+"KeyPEPCity" = "Ville";
+"KeyPEPCountry" = "Pays";
+"KeyPEPWebsite" = "Site internet";
+"KeyPEPFax" = "Téléfax";
+"KeyPEPPassword" = "Mot de passe";
+
+"KeyPEPEditProfile" = "Editer profile";
+"KeyPEPChangePassword" = "Changer mot de passe";
+"KeyPEPClose" = "X";
+"KeyPEPSave" = "Sauver";
+
+//Provider Screen
+"KeyPSPracticeName" = "Entrez le nom du cabinet";
+"KeyPSStreet" = "Entrez la rue.";
+"KeyPSNo" = "Entrez le no.";
+"KeyPSCity" = "Sélectionnez la ville.";
+"KeyPSCountry" = "Sélectionnez le pays.";
+"KeyPSWebsite" = "Entrez le site internet.";
+"KeyPSFax" = "Entrez le numéro de téléfax.";
+
+//Home Screen
+"keyHomeWelcomeMsg" = "Bienvenue";
+"keyHomeLogin" = "   Connexion";
+"keyHomeSubTitle" = "Le premier portail global & digital portal pour trouver et évaluer \n des professionnels de la santé.";
+"keyHomeSearch" = "Chercher";
+"keyHomeSearchSub" = "Pour chercher votre prestataire de santé.";
+"keyHomeWriteReview" = "Ecrire un avis";
+"keyHomeWriteReviewSub" = "Et évaluer vos prestataires.";
+"keyHomeMakeApp" = "Prendre rendez-vous";
+"keyHomeMakeAppSub" = "Avec vos prestataires préférés.";
+"keyHomeReadArticle" = "Lire des articles médicaux";
+"keyHomeReadArticleSub" = "Dans notre Blog.";
+"keyHomeYouProvider" = "Je suis prestataire";
+"keyHomeYouPatient" = "Je suis patient";
+"keyHomeButton" = "Home";
+"keyHomeAboutUs" = "Sur nous";
+"keyHomeContact" = "Contactez-nous";
+"keyHomeOfferedIn" = "Meopin offert en:";
+
+//Change Password
+"keyCPOldPassword" = "Entrez l'ancien mot de passe";
+"keyCPNewPassword" = "Entrez le nouveau mot de passe";
+"keyCPConfPassword" = "Confirmez le nouveau mot de passe";
+"keyCPSavePassword" = "Sauver le mot de passe";
+"keyCPVNewPassword" = "Entrez le nouveau mot de passe";
+"keyCPVOldPassword" = "Entrez l'ancien mot de passe";
+"keyCPVConfPassword" = "Confirmez le nouveau mot de passe";
+"keyCPPasswordMsg2" = "Votre mot de passe doit avoir 6 caractères et inclure au moins 2 majuscules, 1 minuscule et 1 chiffre.";
+
+//Login Screen
+"keyLILoginTitle" = "Connexion comme";
+"keyLIEmail" = "Email";
+"keyLIPassword" = "Mot de passe";
+"keyLIForPwd" = "mot de passe oublié?";
+"keyLILogin" = "Connecter";
+"keyLINewUser" = "Je suis un nouvel utilisateur";
+"keyLIEmailMsg1" = "Entrez votre email.";
+"keyLIEmailMsg2" = "Entrez un email valable.";
+"keyLIPasswordMsg1" = "Entrez votre mot de passe.";
+"keyLIPasswordMsg2" = "Votre mot de passe doit avoir 6 caractères et inclure au moins 2 majuscules, 1 minuscule et 1 chiffre.";
+
+//Forgot Password
+"keyFPForgotTitle" = "Mot de passe oublié";
+"keyFPSubTitle" = "Pour créer un nouveau mot de passe, indiquez ici votre \n numéro mobile utilisé pendant l’enregistrement.";
+"keyFPMobile" = "Ex. +(préfixe pays)(numéro mobile)";
+"keyFPNext" = "Prochain";
+"keyFPMobileMsg1" = "Entrez votre numéro de mobile enregistré.";
+"keyFPMobileMsg2" = "Entrez votre numéro de mobile enregistré valable.";
+"keyFPVerificationTitle" = "Vérification";
+"keyFPVerifSubTitle" = "Entrez votre code d'activation à 6 chiffres";
+"keyFPVerifCode" = "Entrez ici votre code d'activation à 6 chiffres";
+"keyFPResendCode" = "Renvoyer le code de vérification";
+"keyFPVerify" = "Vérifier";
+"keyFPCodeMsg1" = "Entrez votre code d'activation à 6 chiffres";
+"keyFPCreatePwdTitle" = "Créer nouveau mot de passe";
+"keyFPCreatePwdSubTitle" = "Entrez un nouveau mot de passe pour votre compte.";
+"keyFPNewPassword" = "Nouveau mot de passe";
+"keyFPConfirmaPassword" = "Confirmez le mot de passe";
+"keyFPSubmit" = "Soumettre";
+"keyFPNewPwdMsg1" = "Entrez le nouveau mot de passe.";
+"keyFPNewPwdMsg2" = "Votre mot de passe doit avoir 6 caractères et inclure au moins 2 majuscules, 1 minuscule et 1 chiffre.";
+"keyFPConfPwdMsg1" = "Confirmez le mot de passe";
+"keyFPConfPwdMsg2" = "Le nouveau mot de passe et le mot de passe confirmé doivent être identiques.";
+
+//login remaining
+"keyLoginPatient" = "Patient";
+"keyLoginProvider" = "Prestataire";
+"keyLocationDistance" = "Distance de localisation";
+"keyResultVarification" = "Vérification";
+"KeyTextSearch" = "Chercher";
+
+"KeyTextMale" = "Mâle";
+"KeyTextFemale" = "Femelle";
+"KeyTextBoth" = "Tous les deux";
+

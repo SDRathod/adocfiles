@@ -1,0 +1,203 @@
+/*
+ Localizable.strings
+ Peepons
+ 
+ Created by Dhara
+ Copyright (c) 2014 Dhara. All rights reserved.
+ */
+
+
+//Language
+"keyLangen" = "English";
+"keyLangnl" = "Nederlands";
+"keyLangfr" = "français";
+"keyLangde" = "Deutsche";
+
+//common messages
+"keyInternetMsg" = "Oops, we kunnen Meopin niet bereiken. Controleer je verbinding en probeer opnieuw.";
+"KeyUnknowError" = "er is iets fout gegaan. probeer het opnieuw.";
+
+"keyYes" = "Ja";
+"keyNo" = "Nee";
+"keyOk" = "Ok";
+"keyCancel" = "Annuleer";
+"keyDone" = "Gedaan";
+"keySave" = "Bewaren";
+"keyComingSoon" = "Binnenkort beschikbaar!";
+"keyBuildNo" = "Bouwen:";
+"keyAppUpgradeMsgTitle" = "Nieuwe versie beschikbaar";
+"keyAppUpgradeMsg" = "Er is een nieuwere versie beschikbaar om te downloaden. Wek de app bij door naar de Apple Store te gaan";
+"keyAppUpgradeUpdate" = "Bijwerken";
+
+//Photo
+"keyTakePhoto" = "Maak een foto";
+"keyChoosePhoto" = "Kies een foto";
+"keyRemovePhoto" = "Verwijder een foto";
+"keyNoCamera" = "Camera is niet beschikbaar.";
+
+//Logout
+"keyLogoutMsg" = "Weet je zeker dat je wilt uitloggen?";
+
+//Register Screen
+"KeyRegister" = "Registreren";
+"KeyRegisterContent" = "hier als een patiënt. Registratie is nodig \n om providers te beoordelen en afspraken te maken.";
+"KeySalutation" = "Begroeting";
+"KeyTitle" = "Titel";
+"KeyFirstName" = "Voornaam";
+"KeyLastName" = "Achternaam";
+"KeyUserName" = "Gebruikersnaam";
+"KeyEmailAddress" = "E-mail";
+"KeyMobileNo" = "Ex. +(Land code)(Mobiel nummer)";
+"KeyPassword" = "Kies een wachtwoord";
+"KeyPasswordCon" = "Bevestig je wachtwoord";
+"KeyPolicy" = "Ik accepteer de privacybeleid van Meopin.";
+"KeylblTerms" = "Ik accepteer de algemene voorwaarden van Meopin";
+"KeyLogIN" = "Al geregistreerd? Log in";
+"keyRegisterTitile" = "Ik ben een nieuwe gebruiker";
+
+"keyRVSalutation" = "Vul begroeting in.";
+"keyRVTitle" = "Vul titel in.";
+"keyRVFirstName" = "Vul voornaam in.";
+"keyRVLastName" = "Vul achternaam in.";
+"keyRVUserName" = "Vul gebruikersnaam in.";
+"keyRVMobileNo" = "Vul mobiel nummer in.";
+
+"keyRVEmailMsg1" = "Vul e-mail in.";
+"keyRVEmailMsg2" = "Vul geldige e-mail in.";
+
+"keyRVPassword" = "Kies een wachtwoord.";
+"keyRVPasswordMsg2" = "Uw wachtwoord moet uit 6 tekens bestaan en minstens 2 hoofdletters, één kleine letter en één cijfer bevatten.";
+
+"keyRVConfPassword" = "Bevestig je wachtwoord.";
+"keyRVConfPassword1" = "Wachtwoord en bevestigd wachtwoord komen niet overeen.";
+"keyRVPrivacy" = "Accepteer privacybeleid van Meopin.";
+"keyRVTermCondition" = "Accepteer alstublieft de algemene voorwaarden van Meopin.";
+
+// Register Varification Screen
+"KeyRegVVarification" = "Verificatie";
+"KeyRegVVarificationMsg" = "We hebben je  een sms met een code gestuurd naar je mobiele telefoon \n onder het nummer dat je hebt aangegeven \n tijdens het registreren.";
+"KeyRegVVarificationConfiMsg" = "Vul hier de \n 6 cijferige activeringscode in om uw registratie te voltooien";
+"KeyRegVVarificationCodeMsg" = "Vul hier de 6 cijferige activeringscode in.";
+"KeyRegVResendVarificationCode" = "Verzend verificatiecode opnieuw";
+"KeyRegVBtnSubmit" = "Voorleggen";
+"KeyRegVVarifyCodeMsg" = "U hebt een verkeerde activatiecode ingevoerd.";
+"KeyRegVVarificationCode" = "Vul hier de 6 cijferige activeringscode in.";
+
+//Register Success Screen
+"keyRegisterSuccessStatus" = "Bedankt";
+"keyRegisterSuccessMsgFirst" = "Uw registratieverzoek is ingediend bij Meopin.";
+"keyRegisterSuccessMsgMiddle" = "Zodra uw registratie door Meopin is geaccepteerd, ontvangt u een e-mail en ontvangt u uw toegangsgegevens.";
+"keyRegisterSuccessMsgLast" = "U kunt zoeken naar en zoeken naar zorgaanbieders en \n onze gezondheidsgerelateerde blogartikelen lezen, \n zonder enige registratie.";
+
+"keyRegisterSuccessSearchProvider" = "Zoek naar een verzorger";
+"keyRegisterSuccessMeopinBlog" = "Ga naar Meopin blog";
+
+//Register Failer Screen
+"keyRegisterFailStatus" = "Oops! Geen match";
+"keyRegisterFailMsg" = "Uw telefoonnummerverificatie is mislukt.";
+"keyRegisterFailScreenMsg" = "De eerste wereldwijde en digitale portal om \nzorgaanbieders te vinden en beoordelen.";
+"keyRegisterFailMsgCode" = "Stuur me een nieuwe activeringscode";
+
+//Provider Edit Profile
+"KeyPEPSalutation" = "Begroeting";
+"KeyPEPTitle" = "Titel";
+"KeyPEPFirstName" = "Voornaam";
+"KeyPEPLastName" = "Achternaam";
+"KeyPEPEmailAddress" = "E-mail";
+"KeyPEPPracticeName" = "Oefen naam";
+"KeyPEPStreet" = "Straat";
+"KeyPEPNo" = "Nummer";
+"KeyPEPCity" = "Stad";
+"KeyPEPCountry" = "Land";
+"KeyPEPWebsite" = "Website";
+"KeyPEPFax" = "Fax";
+"KeyPEPPassword" = "Wachtwoord";
+
+"KeyPEPEditProfile" = "Bewerk profiel";
+"KeyPEPChangePassword" = "Verander wachtwoord";
+"KeyPEPClose" = "X";
+"KeyPEPSave" = "Bewaren";
+
+//Provider Screen
+"KeyPSPracticeName" = "Vul oefen naam in.";
+"KeyPSStreet" = "Vul straat in.";
+"KeyPSNo" = "Vul nummer in.";
+"KeyPSCity" = "Selecteer stad.";
+"KeyPSCountry" = "Selecteer land.";
+"KeyPSWebsite" = "Vul website in.";
+"KeyPSFax" = "Vul fax in.";
+
+//Home Screen
+"keyHomeWelcomeMsg" = "Welkom";
+"keyHomeLogin" = "   LOGIN";
+"keyHomeSubTitle" = "De eerste wereldwijde en digitale portal om \nzorgaanbieders te vinden en beoordelen.";
+"keyHomeSearch" = "Zoeken";
+"keyHomeSearchSub" = "Om uw zorgverleners te vinden.";
+"keyHomeWriteReview" = "Schrijf een recensie";
+"keyHomeWriteReviewSub" = "En beoordeel uw leveranciers.";
+"keyHomeMakeApp" = "Een afspraak maken";
+"keyHomeMakeAppSub" = "Met uw voorkeursleveranciers.";
+"keyHomeReadArticle" = "Medische artikelen lezen";
+"keyHomeReadArticleSub" = "In onze blog.";
+"keyHomeYouProvider" = "Ik ben een leverancier";
+"keyHomeYouPatient" = "Ik ben een patient";
+"keyHomeButton" = "Home";
+"keyHomeAboutUs" = "Over ons";
+"keyHomeContact" = "Contact met ons opneemen";
+"keyHomeOfferedIn" = "Meopin aangeboden in:";
+
+//Change Password
+"keyCPOldPassword" = "Vul een oud wachtwoord in";
+"keyCPNewPassword" = "Vul een nieuw wachtwoord in";
+"keyCPConfPassword" = "Bevestig wachtwoord";
+"keyCPSavePassword" = "Wachtwoord bewaren";
+"keyCPVNewPassword" = "Please enter new password.";
+"keyCPVOldPassword" = "Please enter old password.";
+"keyCPVConfPassword" = "Please enter confirm password.";
+"keyCPPasswordMsg2" = "Uw wachtwoord moet uit 6 tekens bestaan en minstens 2 hoofdletters, één kleine letter en één cijfer bevatten.";
+
+//Login Screen
+"keyLILoginTitle" = "Inloggen als";
+"keyLIEmail" = "E-mail";
+"keyLIPassword" = "Wachtwoord";
+"keyLIForPwd" = "Wachtwoord vergeten?";
+"keyLILogin" = "Log in";
+"keyLINewUser" = "Ik ben een nieuwe gebruiker";
+"keyLIEmailMsg1" = "Vul uw e-mailadres in.";
+"keyLIEmailMsg2" = "Vul een geltig e-mailadres in.";
+"keyLIPasswordMsg1" = "Vul uw wachtwoord in.";
+"keyLIPasswordMsg2" = "Uw wachtwoord moet uit 6 tekens bestaan en minstens 2 hoofdletters, één kleine letter en één cijfer bevatten.";
+
+//Forgot Password
+"keyFPForgotTitle" = "Wachtwoord vergeten";
+"keyFPSubTitle" = "Voer hier uw mobiele nummer in dat werd gebruikt tijdens de registratie \nom een nieuw wachtwoord aan te maken.";
+"keyFPMobile" = "Ex. +(Land Code)(Mobiel nummer)";
+"keyFPNext" = "Volgende";
+"keyFPMobileMsg1" = "Voer uw geregistreerde mobiele nummer in.";
+"keyFPMobileMsg2" = "Voer uw geregistreerde geldig mobiele nummer in.";
+"keyFPVerificationTitle" = "Verificatie";
+"keyFPVerifSubTitle" = "Vul hier de 6 cijferige activeringscode in.";
+"keyFPVerifCode" = "Vul hier de 6 cijferige activeringscode in";
+"keyFPResendCode" = "Verzend verificatiecode opnieuw";
+"keyFPVerify" = "Verifiëren";
+"keyFPCodeMsg1" = "Vul hier de 6 cijferige activeringscode in.";
+"keyFPCreatePwdTitle" = "Maak een nieuw wachtwoord aan";
+"keyFPCreatePwdSubTitle" = "Maak een nieuw wachtwoord aan voor je account.";
+"keyFPNewPassword" = "Nieuw wachtwoord";
+"keyFPConfirmaPassword" = "Bevestig wachtwoord";
+"keyFPSubmit" = "Voorleggen";
+"keyFPNewPwdMsg1" = "Vul uw nieuw wachtwoord in.";
+"keyFPNewPwdMsg2" = "Uw wachtwoord moet uit 6 tekens bestaan en minstens 2 hoofdletters, één kleine letter en één cijfer bevatten.";
+"keyFPConfPwdMsg1" = "Bevestig wachtwoord";
+"keyFPConfPwdMsg2" = "Nieuw wachtwoord en bevestigt wachtwoord moeten hetzelfde zijn.";
+
+//login remaining
+"keyLoginPatient" = "Patient";
+"keyLoginProvider" = "Leverancier";
+"keyResultVarification" = "Verificatie";
+"KeyTextSearch" = "Zoeken";
+
+"KeyTextMale" = "Mannetje";
+"KeyTextFemale" = "Vrouw";
+"KeyTextBoth" = "Beide";
+
